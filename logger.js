@@ -9,6 +9,7 @@ var filepath = '/sys/bus/w1/devices/'; // Place where sensors are located on the
 // Format	sensor: { 'id': '28-12fe39f3', 'name': 'living-room-1' }
 var sensors = []; // List of temp sensor id's
 
+// Database definition
 
 /*
  * loopSensors()
@@ -35,9 +36,21 @@ function loopSensors(sensors) {
  * ---------------------------------------------------------------------
  */
 function parseTemp(sensor, filepath) {
+
+	// Read sensor data from the file in the raspberry pi
 	var file = fs.readFile(filepath + sensor +'/w1_slave', function (err, data) {
 		if (err) {
 			console.log('Error reading file for sensor ' + sensor;
+			// better error handling...
+		} else {
+			// Split text data per lines
+			data = data.split('\n');
+
+			// Temp data is the 5 last characters at the end of line 2
+			// and needs to be divided by 100 to get the correct value
+			var temp = data[1].splice(data[1].length, -5) / 100;
+
+			return temp;
 		}
 
 	});
@@ -51,6 +64,8 @@ function parseTemp(sensor, filepath) {
  * ------------------------------------------------------
  */
 function logTemp(temp, timestamp) {
-	
+	// Write stuff to database...
+
+	// Match sensor by it's id(serialnumber?) in the database (not table id)
 }
 

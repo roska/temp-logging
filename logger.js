@@ -1,3 +1,4 @@
+#!/usr/bin/node
 // Dependencies
 var fs = require('fs');
 var dateformat = require('dateformat');
@@ -16,7 +17,12 @@ var filepath = '/sys/bus/w1/devices/'; // Place where sensors are located on the
  * node-mysql documentation:
  * https://github.com/mysqljs/mysql#pooling-connections
  */
-var pool = require('database.js');
+var pool = mysql.createPool({
+	host		: '127.0.0.1',
+	user		: 'root',
+	password	: '',
+	database	: 'home'
+});
 
 /*
  * Sensor array
@@ -87,7 +93,7 @@ function logTemp(temp) {
 			console.log('Couldnt connect to database');
 		}
 
-		connection.query('INSERT INTO temp VALUES (null, '+ temp +', '+ timestamp +');', function(err, rows) {
+		connection.query('INSERT INTO temp VALUES (null, '+ temp +', "'+ timestamp +'");', function(err, rows) {
 			if (err) {
 				// log error...
 				console.log('Error writing data to database');
@@ -111,3 +117,6 @@ function logTemp(temp) {
 function getTimestamp() {
 	return dateformat(new Date(), "yyyy-mm-dd hh:MM:ss");
 }
+
+// run the main loop
+loopSensors(sensors);

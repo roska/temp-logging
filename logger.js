@@ -12,7 +12,6 @@ var filepath = '/sys/bus/w1/devices/'; // Place where sensors are located on the
  * 
  * Database connection definition
  * ------------------------------
- * DB connection pool definition must be loaded from `database.js`-file
  *
  * node-mysql documentation:
  * https://github.com/mysqljs/mysql#pooling-connections

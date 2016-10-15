@@ -11,5 +11,9 @@
   "dependencies": {
     "dateformat": "^1.0.12",
     "mysql": "^2.11.1"
+  },
+  "repository" {
+	  "type" : "git",
+	  "url" : "https://github.com/roska/temp-logging"
   }
 }

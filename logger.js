@@ -16,7 +16,7 @@ var filepath = '/sys/bus/w1/devices/'; // Place where sensors are located on the
  * node-mysql documentation:
  * https://github.com/mysqljs/mysql#pooling-connections
  */
-//var pool = require('database.js');
+var pool = require('database.js');
 
 /*
  * Sensor array
@@ -85,6 +85,10 @@ function parseTemp(sensor, filepath) {
 function logTemp(temp, timestamp) {
 	// Write stuff to database...
 	pool.getConnection(function(err, connection) {
+		if (err) {
+			console.log('Couldnt connect to database');
+		}
+
 		connection.query('INSERT INTO temp VALUES (null, '+ temp +', '+ timestamp +');', function(err, rows) {
 			if (err) {
 				// log error...

@@ -92,7 +92,7 @@ function logTemp(temp) {
 			console.log('Couldnt connect to database');
 		}
 
-		connection.query('INSERT INTO temp VALUES (null, '+ temp +', "'+ timestamp +'");', function(err, rows) {
+		connection.query('INSERT INTO temp (id, temp, timestamp) VALUES (null, '+ temp +', "'+ timestamp +'");', function(err, rows) {
 			if (err) {
 				// log error...
 				console.log('Error writing data to database');

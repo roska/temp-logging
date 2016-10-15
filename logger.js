@@ -38,10 +38,7 @@ function loopSensors(sensors) {
 	for (var i = 0; i < sensors.length; i++) {
 		var sensor = sensors[i];
 
-		var temp = parseTemp(sensor, filepath);
-		var timestamp = getTimestamp();
-
-		logTemp(temp, timestamp);
+		parseTemp(sensor.id, filepath);
 	}
 }
 
@@ -69,7 +66,7 @@ function parseTemp(sensor, filepath) {
 			
 			console.log('temperature: '+temp);
 
-			return temp;
+			logTemp(temp);
 		}
 
 	});
@@ -82,7 +79,8 @@ function parseTemp(sensor, filepath) {
  * Write temperature data and timestamp into the database
  * ------------------------------------------------------
  */
-function logTemp(temp, timestamp) {
+function logTemp(temp) {
+	var timestamp = getTimestamp();
 	// Write stuff to database...
 	pool.getConnection(function(err, connection) {
 		if (err) {

@@ -7,9 +7,13 @@ var mysql = require('mysql');
 // Variables
 var filepath = '/sys/bus/w1/devices/'; // Place where sensors are located on the raspberry
 
-/* 
+
+// API service
+var api = require('./api.js');
+
+/*
  * Database connection pool
- * 
+ *
  * Database connection definition
  * ------------------------------
  *
@@ -63,12 +67,12 @@ function parseTemp(sensor, filepath) {
 			// better error handling...
 		} else {
 			data = data.split('\n'); // Split sensor data file per line
-			
+
 			// Temperature data is the last 5 characters of the file's second row
 			var stop = data[1].length;
 			var start = stop - 5;
 			var temp = data[1].substring(start, stop) / 1000; // Divide by 1000 to get value in correct format
-			
+
 			console.log('temperature: '+temp);
 
 			logTemp(temp);
@@ -86,6 +90,10 @@ function parseTemp(sensor, filepath) {
  */
 function logTemp(temp) {
 	var timestamp = getTimestamp();
+
+	//
+	api.logTemp(temp, timestamp);
+
 	// Write stuff to database...
 	pool.getConnection(function(err, connection) {
 		if (err) {
@@ -99,7 +107,7 @@ function logTemp(temp) {
 			} else {
 				console.log('Writing to database succesful!');
 			}
-			
+
 			connection.release();
 		});
 	});
@@ -109,7 +117,7 @@ function logTemp(temp) {
 
 /*
  * getTimestamp()
- * 
+ *
  * Get the current timestamp in 'yyyy-mm-dd hh:MM:ss'-format
  * ---------------------------------------------------------
  */
